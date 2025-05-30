@@ -24,6 +24,7 @@ def create_animation(df):
         plt.title(f'Top 10 Countries by Population in {frame}')
         plt.xlabel('Population on 1st January')
         plt.ylabel('Country')
+        plt.tight_layout()
         add_year_text(ax, frame)
         
 
@@ -33,7 +34,7 @@ def create_animation(df):
 if __name__ == "__main__":
     df = pd.read_csv('cleaned-un-country-data.csv')
     anim = create_animation(df)
-    plt.tight_layout()
+    
     
     #anim.save('population_animation.mp4', writer='ffmpeg', fps=10)
     plt.show()
