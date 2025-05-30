@@ -18,15 +18,19 @@ def create_animation(df):
     def animate(frame):
         ax.clear()
         pop_data_frame = df[df['Time'] == frame]
-        top_pop = pop_data_frame.nlargest(10, 'TPopulation1Jan').sort_values(by='TPopulation1Jan', ascending=True)
+        top_pop = pop_data_frame.nlargest(10, 'TPopulation1Jan').sort_values(by='TPopulation1Jan', ascending=True).reset_index(drop=True)
         
-        plt.barh(top_pop['Location'], top_pop['TPopulation1Jan'], color='blue')
-        plt.title(f'Top 10 Countries by Population in {frame}')
-        plt.xlabel('Population on 1st January')
-        plt.ylabel('Country')
-        plt.tight_layout()
+
+        ax.barh(top_pop['Location'], top_pop['TPopulation1Jan'], color='blue')
+        for i, row in top_pop.iterrows():
+            ax.text(row['TPopulation1Jan'], i, f"{row['TPopulation1Jan']:,}", va='center', fontsize=10)
+        
+        ax.set_title(f'Top 10 Countries by Population in {frame}')
+        ax.set_xlabel('Population on 1st January')
+        ax.set_ylabel('Country')
+        
         add_year_text(ax, frame)
-        
+        fig.tight_layout()
 
     anim = FuncAnimation( fig, animate, frames=frames, repeat=True, interval=200)
     return anim
